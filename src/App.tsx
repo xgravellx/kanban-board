@@ -1,24 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter, Routes, Route} from "react-router-dom";
+import { Provider } from 'react-redux';
+// pages
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import BoardPage from './pages/BoardPage';
+import {AppPage}  from './pages/AppPage';
+// components
+import Layout from './components/Layout';
+import Auth from './components/Auth';
+// features
+import store from './features/store';
+
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Provider store={store}>
+        <BrowserRouter>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route path='/' element={<LoginPage />}/>
+              <Route path='/login' element={<LoginPage />}/>
+              <Route path='/register' element={<RegisterPage />}/>
+              <Route path='/boards' element={<Auth><BoardPage /></Auth>}/>
+              <Route path='/boards/:boardId' element={<Auth><AppPage /></Auth>}/>
+            </Route>
+            <Route path='*' element={<p>404!</p>} />
+          </Routes>
+        </BrowserRouter>
+      </Provider>
     </div>
   );
 }
