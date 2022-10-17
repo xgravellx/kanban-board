@@ -1,56 +1,31 @@
-// import
-import { useState } from 'react';
-import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
-import {
-	checklistItemDelete,
-	checklistItemUpdate,
-	selectChecklistItemsById,
-} from '../../features/checklistItems/checklistItemsSlice';
-
-// Mui
-import {
-	Checkbox,
-	IconButton,
-	ListItem,
-	ListItemButton,
-	ListItemIcon,
-	ListItemText,
-} from '@mui/material';
+import React, { FC, useState } from 'react'
+import { checklistItemDelete, checklistItemUpdate } from '../../../features/checklistItems/checklistItemsSlice';
+import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
+import { CheckListChildProps } from './CheckListChild.types'
+import { selectChecklistItemsById } from '../../../features/checklistItems/checklistItemsSlice';
+import { Checkbox, IconButton, ListItem, ListItemButton, ListItemIcon, ListItemText} from '@mui/material';
 import DeleteOutlineSharpIcon from '@mui/icons-material/DeleteOutlineSharp';
 
-// Interface
-interface PropsInterface {
-	checklistItemId: number;
-}
-
-function ChecklistsChild({ checklistItemId }: PropsInterface) {
-	// Redux
-	const { id, checklistId, title, isChecked } = useAppSelector((state) =>
-		selectChecklistItemsById(state, checklistItemId)
+const CheckListChild : FC<CheckListChildProps>= (props) => {
+    const { id, checklistId, title, isChecked } = useAppSelector((state) =>
+		selectChecklistItemsById(state, props.checklistItemId)
 	);
 	const dispatch = useAppDispatch();
-
-	// States
 	const [checked, setChecked] = useState<boolean>(isChecked);
 
-	// Function
 	function handleToggle() {
 		dispatch(checklistItemUpdate({ id, isChecked: !checked }));
 		setChecked((prev) => !prev);
 	}
-
 	function handleChecklistItemDelete(
 		event: React.MouseEvent<HTMLButtonElement, MouseEvent>
 	) {
 		event.stopPropagation();
-
-		// Dispatch checklistItem delete
 		dispatch(checklistItemDelete({ id, checklistId }));
 	}
-
-	// Element
-	return (
-		<ListItem
+  return (
+    <div>
+        <ListItem
 			key={id}
 			secondaryAction={
 				<IconButton
@@ -76,7 +51,8 @@ function ChecklistsChild({ checklistItemId }: PropsInterface) {
 				<ListItemText id={`checkbox-list-label-${id}`} primary={title} />
 			</ListItemButton>
 		</ListItem>
-	);
+    </div>
+  )
 }
 
-export default ChecklistsChild;
+export default CheckListChild;

@@ -7,21 +7,12 @@ import { CardItemProps } from './CardItem.types'
 import { selectCardLabelsByCardId } from '../../features/cardLabels/cardLabelsSlice';
 import {selectCardsById} from '../../features/cards/cardsSlice';
 import { Draggable } from 'react-beautiful-dnd';
-
-import {
-	Box,
-	Breadcrumbs,
-	Modal,
-	Typography,
-	TextField,
-	Chip,
-	IconButton,
-} from '@mui/material';
+import { Box, Breadcrumbs, Modal, Typography, TextField, Chip, IconButton} from '@mui/material';
 import AccessTimeSharpIcon from '@mui/icons-material/AccessTimeSharp';
 import CloseSharpIcon from '@mui/icons-material/CloseSharp';
 import CommentSharpIcon from '@mui/icons-material/CommentSharp';
-import DeleteOutlineSharpIcon from '@mui/icons-material/DeleteOutlineSharp'
-import ChecklistChip from '../CheckList/ChecklistChip';
+import DeleteOutlineSharpIcon from '@mui/icons-material/DeleteOutlineSharp';
+import CheckListChip from '../CheckList/CheckListChip';
 import LabelsBox from '../Labels/LabelsBox';
 import Checklists from '../CheckList';
 import Comments from '../Comments';
@@ -190,7 +181,7 @@ const CardItem : FC<CardItemProps> = (props) => {
 				
 							{checklists?.length > 0 &&
 								checklists.map((checklistId: number) => (
-									<ChecklistChip key={checklistId} checklistId={checklistId} />
+									<CheckListChip key={checklistId} checklistId={checklistId} />
 								))}
 						</Box>
 						

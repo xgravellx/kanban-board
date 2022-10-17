@@ -1,35 +1,16 @@
-// Imports
-import { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import React, { FC, useState } from 'react'
 import { commentsCreate } from '../../features/comments/commentsSlice';
-
-// Mui
-import {
-	Avatar,
-	Box,
-	Button,
-	Grid,
-	TextField,
-	Typography,
-} from '@mui/material';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { CommentsProps } from './Comments.types'
+import { Avatar, Box, Button, TextField, Typography} from '@mui/material';
 import CommentSharpIcon from '@mui/icons-material/CommentSharp';
 import CommentsItem from './CommentsItem';
 
-// Interface
-interface PropsInterface {
-	cardId: number;
-	comments: [];
-}
-
-function Comments({ cardId, comments }: PropsInterface) {
-	// State
-	const [newComment, setNewComment] = useState<string>('');
-
-	// Redux
+const Comments : FC<CommentsProps> = (props) => {
+    const [newComment, setNewComment] = useState<string>('');
 	const { username } = useAppSelector((state) => state.user);
 	const dispatch = useAppDispatch();
 
-	// Functions
 	function handleInputChange(
 		event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
 	): void {
@@ -39,16 +20,13 @@ function Comments({ cardId, comments }: PropsInterface) {
 	function handleCommentSubmit(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
 		event.stopPropagation();
-
 		if (!newComment) return;
-
-		dispatch(commentsCreate({ cardId, message: newComment }));
-
+		dispatch(commentsCreate({ cardId: props.cardId, message: newComment }));
 		setNewComment('');
 	}
-
-	return (
-		<Box sx={{ mb: 4 }}>
+  return (
+    <div>
+        <Box sx={{ mb: 4 }}>
 			<Typography
 				component="h3"
 				variant="h5"
@@ -95,13 +73,14 @@ function Comments({ cardId, comments }: PropsInterface) {
 					</Button>
 				</Box>
 
-				{comments?.length > 0 &&
-					comments.map((commentId) => (
+				{props.comments?.length > 0 &&
+					props.comments.map((commentId) => (
 						<CommentsItem key={commentId} commentId={commentId} />
 					))}
 			</Box>
 		</Box>
-	);
+    </div>
+  )
 }
 
-export default Comments;
+export default Comments

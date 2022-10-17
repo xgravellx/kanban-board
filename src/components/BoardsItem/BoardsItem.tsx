@@ -1,6 +1,6 @@
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { boardsDelete } from '../../features/boards/boardsSlice';
-import Members from '../Members';
+import Member from '../Members/Member';
 import { Link } from 'react-router-dom';
 import { Styled } from './BoardsItem.styled';
 
@@ -17,7 +17,7 @@ function BoardItem({ board }: AppPropInterface) {
 		<Styled>
 			<Link to ={`/boards/${board?.id}`} className='card-top' >
 				<div>
-					{board?.members?.length > 0 && <Members memberIds={board.members} />}
+					{board?.members?.length > 0 && <Member memberIds={board.members} />}
 				</div>
 				<div className='board-cards'>
 					<div className='board-card-icons'>

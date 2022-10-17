@@ -1,64 +1,36 @@
-// import
-import { useState } from 'react';
-import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
-import {
-	checklistsDelete,
-	selectChecklistsById,
-} from '../../features/checklists/checklistsSlice';
-import {
-	checklistItemCreate,
-	selectCheckedItemsByChecklistId,
-} from '../../features/checklistItems/checklistItemsSlice';
-
-// Mui
-import {
-	Grid,
-	IconButton,
-	List,
-	ListItem,
-	ListItemText,
-	TextField,
-	Typography,
-} from '@mui/material';
+import React, { FC, useState } from 'react'
+import { checklistItemCreate, selectCheckedItemsByChecklistId } from '../../../features/checklistItems/checklistItemsSlice';
+import { checklistsDelete } from '../../../features/checklists/checklistsSlice';
+import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
+import { CheckListParentProps } from './CheckListParent.types'
+import { selectChecklistsById } from '../../../features/checklists/checklistsSlice';
+import { Grid, IconButton, List, ListItem, ListItemText, TextField, Typography} from '@mui/material';
 import DeleteOutlineSharpIcon from '@mui/icons-material/DeleteOutlineSharp';
-import ChecklistsChild from './ChecklistsChild';
+import CheckListChild from '../CheckListChild';
+import CheckListProgress from '../CheckListProgress';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
-import ChecklistProgress from './ChecklistsProgress';
 
-// Interface
-interface PropsInterface {
-	checklistId: number;
-}
-
-function ChecklistsParent({ checklistId }: PropsInterface) {
-	// State
-	const [newChecklistItem, setNewChecklistItem] = useState<string>('');
-
-	// Redux
+const CheckListParent : FC<CheckListParentProps> = (props) => {
+    const [newChecklistItem, setNewChecklistItem] = useState<string>('');
 	const { id, cardId, title, items } = useAppSelector((state) =>
-		selectChecklistsById(state, checklistId)
+		selectChecklistsById(state, props.checklistId)
 	);
 	const checkedItems = useAppSelector((state) =>
-		selectCheckedItemsByChecklistId(state, checklistId)
+		selectCheckedItemsByChecklistId(state, props.checklistId)
 	);
 	const dispatch = useAppDispatch();
 
-	// Function
 	function handleChecklistDelete(
 		event: React.MouseEvent<HTMLButtonElement, MouseEvent>
 	) {
 		event.stopPropagation();
-
-		// Dispatch checklist delete action
 		dispatch(checklistsDelete({ id, cardId }));
 	}
 
-	// Functions
 	function handleInputChange(
 		event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
 	): void {
 		const { value } = event.target;
-
 		setNewChecklistItem(value);
 	}
 
@@ -80,11 +52,9 @@ function ChecklistsParent({ checklistId }: PropsInterface) {
 
 		setNewChecklistItem('');
 	}
-
-	// Element
-	return (
-		<>
-			<Grid container alignItems="center">
+  return (
+    <div>
+        <Grid container alignItems="center">
 				<Grid item xs={11}>
 					<Typography component="h4" variant="h6">
 						{title}
@@ -97,7 +67,7 @@ function ChecklistsParent({ checklistId }: PropsInterface) {
 				</Grid>
 			</Grid>
 
-			<ChecklistProgress
+			<CheckListProgress
 				checkedItemsTotal={checkedItems?.length ? checkedItems.length : 0}
 				checklistTotal={items?.length ? items.length : 0}
 			/>
@@ -107,7 +77,7 @@ function ChecklistsParent({ checklistId }: PropsInterface) {
 					<List sx={{ width: '100%', p: 0 }}>
 						{items?.length > 0 &&
 							items.map((itemId: number) => (
-								<ChecklistsChild key={itemId} checklistItemId={itemId} />
+								<CheckListChild key={itemId} checklistItemId={itemId} />
 							))}
 
 						<ListItem
@@ -138,8 +108,8 @@ function ChecklistsParent({ checklistId }: PropsInterface) {
 					</List>
 				</Grid>
 			</Grid>
-		</>
-	);
+    </div>
+  )
 }
 
-export default ChecklistsParent;
+export default CheckListParent

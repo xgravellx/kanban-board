@@ -1,56 +1,30 @@
-// Imports
-import { useState } from 'react';
-import { useAppSelector } from '../../hooks/hooks';
-import { selectUsersIds } from '../../features/users/usersSlice';
-import { selectBoardsById } from '../../features/boards/boardsSlice';
-
-// Component
-import MembersMenuItem from './MembersMenuItem';
-
-// Mui
+import React, { FC, useState } from 'react'
+import { useAppSelector } from '../../../hooks/hooks';
+import { shareButtonStyles } from './MemberMenu.styled'
+import { MemberMenuProps } from './MemberMenu.types'
+import { selectBoardsById } from '../../../features/boards/boardsSlice';
+import { selectUsersIds } from '../../../features/users/usersSlice';
 import { Box, Button, List, Menu } from '@mui/material';
+import MemberMenuItem from '../MemberMenuItem';
 
-// Interface
-interface PropsInterface {
-	boardId: number;
-}
 
-// Styles
-const shareButtonStyles = {
-	color: '#fff',
-	border: 0,
-	ml: 1,
-	'&:hover': {
-		border: 0,
-	},
-};
-
-function MembersMenu({ boardId }: PropsInterface) {
-	// States
-	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-	// Redux
+const MemberMenu :FC<MemberMenuProps> = (props) => {
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const { id: userId } = useAppSelector((state) => state.user);
-	const board = useAppSelector((state) => selectBoardsById(state, boardId));
+	const board = useAppSelector((state) => selectBoardsById(state, props.boardId));
 	const userIds = useAppSelector((state) => selectUsersIds(state));
-
 	const isOwner = userId === board?.ownerId ? true : false;
-
-	// Variables
 	const open = Boolean(anchorEl);
 
-	// Functions
 	function handleOpen(event: React.MouseEvent<HTMLButtonElement>) {
 		setAnchorEl(event.currentTarget);
 	}
-
 	function handleClose() {
 		setAnchorEl(null);
 	}
-
-	return isOwner && userIds?.length > 1 ? (
-		<>
-			<Button
+  return isOwner && userIds?.length > 1 ? (
+    <div>
+        <Button
 				id="members-menu-button"
 				variant="outlined"
 				sx={shareButtonStyles}
@@ -76,18 +50,18 @@ function MembersMenu({ boardId }: PropsInterface) {
 						{userIds.map(
 							(userId) =>
 								Number(userId) !== board?.ownerId && (
-									<MembersMenuItem
+									<MemberMenuItem
 										key={userId}
 										userId={Number(userId)}
-										boardId={boardId}
+										boardId={props.boardId}
 									/>
 								)
 						)}
 					</List>
 				</Box>
 			</Menu>
-		</>
-	) : null;
+    </div>
+  ) : null;
 }
 
-export default MembersMenu;
+export default MemberMenu

@@ -1,64 +1,45 @@
-// imports
-import { useState } from 'react';
-import { useAppDispatch } from '../../hooks/hooks';
-import { checklistsCreate } from '../../features/checklists/checklistsSlice';
-
-// Mui
+import React, { FC, useState } from 'react'
+import { checklistsCreate } from '../../../features/checklists/checklistsSlice';
+import { useAppDispatch } from '../../../hooks/hooks';
+import { CheckListAdderProps } from './CheckListAdder.types'
 import { TextField, IconButton, Popover, Box, Button } from '@mui/material';
 import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
 
-// Interface
-interface PropsInterface {
-	cardId: number;
-}
-
-// Element
-function CheckListAdder({ cardId }: PropsInterface) {
-	// States
-	const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+const CheckListAdder : FC<CheckListAdderProps> = (props) => {
+    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 	const [inputValue, setInputValue] = useState<string>('');
-
-	// Variables
 	const dispatch = useAppDispatch();
 	const open = Boolean(anchorEl);
 	const id = open ? 'simple-popover' : undefined;
 
-	// Functions
-	function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
+    function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
 		setAnchorEl(event.currentTarget);
 	}
-
 	function handleClose() {
 		setAnchorEl(null);
 	}
-
 	function handleInputChange(
 		event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
 	) {
 		const { value } = event.target;
 		setInputValue(value);
 	}
-
 	function handleAddItem(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
 		event.stopPropagation();
-
-		// TODO: Dispatch create checklist
 		dispatch(
 			checklistsCreate({
 				title: inputValue,
-				cardId,
+				cardId : props.cardId,
 			})
 		);
 
 		setInputValue('');
 		handleClose();
 	}
-
-	// Return
-	return (
-		<>
-			<IconButton aria-label="Add a checklist" onClick={handleClick}>
+  return (
+    <div>
+        <IconButton aria-label="Add a checklist" onClick={handleClick}>
 				<CheckBoxOutlinedIcon />
 			</IconButton>
 
@@ -91,8 +72,8 @@ function CheckListAdder({ cardId }: PropsInterface) {
 					</Box>
 				</Box>
 			</Popover>
-		</>
-	);
+    </div>
+  )
 }
 
-export default CheckListAdder;
+export default CheckListAdder

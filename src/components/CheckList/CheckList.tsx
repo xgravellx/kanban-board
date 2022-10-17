@@ -1,18 +1,14 @@
-// Component
-import ChecklistsParent from './ChecklistsParent';
-
-// Mui
+import React, { FC } from 'react'
+import { CheckListProps } from './CheckList.types'
+import CheckListParent from './CheckListParent';
 import { Box, Typography } from '@mui/material';
 import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
 
-// Interface
-interface PropsInterface {
-	checklists: [];
-}
+const CheckList : FC<CheckListProps> = (props) => {
 
-function Checklists({ checklists }: PropsInterface) {
-	return (
-		<Box sx={{ mb: 8 }}>
+  return (
+    <div>
+        <Box sx={{ mb: 8 }}>
 			<Typography
 				component="h3"
 				variant="h5"
@@ -29,13 +25,14 @@ function Checklists({ checklists }: PropsInterface) {
 					mb: 2,
 				}}
 			>
-				{checklists?.length > 0 &&
-					checklists.map((checklistId) => (
-						<ChecklistsParent key={checklistId} checklistId={checklistId} />
+				{props.checklists?.length > 0 &&
+					props.checklists.map((checklistId) => (
+						<CheckListParent key={checklistId} checklistId={checklistId} />
 					))}
 			</Box>
 		</Box>
-	);
+    </div>
+  )
 }
 
-export default Checklists;
+export default CheckList
