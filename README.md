@@ -1,6 +1,20 @@
 # Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Technologies Used in the Project
+    - Axios
+    - Mui
+    - React Beautiful Dnd
+    - React Redux
+    - React Router
+    - Styled Components
+    - Bootstrap
+    - Google Fonts
+
+## Screenshots
+
+![ss1](https://user-images.githubusercontent.com/88984994/197029319-eb957b00-229e-44cd-a3b0-908e390728a8.jpg)
+
+![ss2](https://user-images.githubusercontent.com/88984994/197029342-12d94210-ec67-41ce-ba77-0c0c7224a80e.jpg)
 
 ## Available Scripts
 
